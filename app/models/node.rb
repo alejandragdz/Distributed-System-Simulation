@@ -1,5 +1,5 @@
 class Node < ApplicationRecord
-  belongs_to :log, optional: true
+  has_many :logs
   before_save :default_values
 
   scope :leader, -> {find_by(status: LEADER) }

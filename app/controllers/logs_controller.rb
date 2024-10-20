@@ -21,6 +21,7 @@ class LogsController < ApplicationController
 
   # POST /logs or /logs.json
   def create
+    puts "HOLA_____________LOG CREADO____________"
     @log = Log.new(log_params)
 
     respond_to do |format|

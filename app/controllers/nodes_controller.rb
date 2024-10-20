@@ -12,7 +12,6 @@ class NodesController < ApplicationController
 
   # GET /nodes/new
   def new
-    puts "ADIOS ADIOS"
     @node = Node.new
   end
 
@@ -22,11 +21,11 @@ class NodesController < ApplicationController
 
   # POST /nodes or /nodes.json
   def create
-    puts "HOLA HOLA"
     @node = Node.new(node_params)
 
     respond_to do |format|
       if @node.save
+        ActiveNodeJob.perform_async()
         format.html { redirect_to root_url, notice: "Node was successfully created." }
         format.json { render :show, status: :created, location: @node }
       else
