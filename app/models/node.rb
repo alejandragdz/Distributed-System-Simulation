@@ -14,4 +14,15 @@ class Node < ApplicationRecord
   LEADER = 1
   CANDIDATE = 2
   FOLLOWER = 3
+
+  def leader?
+    @leader = Node.leader
+    return self.id == @leader.id
+  end
+
+  def my_logs
+    @leader = Node.leader
+    return Log.leader_logs(@leader.id) if self.leader?
+    return Log.follower_logs(@leader.id)
+  end
 end

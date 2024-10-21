@@ -3,5 +3,6 @@ class HomeController < ApplicationController
     @leader = Node.leader
     @nodes  = Node.nodes
     @node   = Node.new
+    @logs = Log.all
   end
 end

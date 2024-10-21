@@ -1,12 +1,11 @@
 <div id="<%= dom_id log %>">
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Status:</strong>
-    <%= log.status %>
-  </p>
-
-  <p class="my-5">
-    <strong class="block font-medium mb-1">Response:</strong>
-    <%= log.response %>
-  </p>
-
+  <tr>
+    <th class="px-1 text-orange-200 max-w-sm"><%= log.created_at %>:</th>
+    <% if log.status == Log::OK %>
+      <td class="px-1 text-lime-400">OK</td>
+    <% else %>
+      <td class="px-1 text-red-400">ERR</td>
+    <% end %>
+    <td class="px-1 text-white"><%= log.response %></td>
+  </tr>
 </div>

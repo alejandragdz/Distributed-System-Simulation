@@ -1,10 +1,10 @@
 class ActiveNodeJob
   include Sidekiq::Job
 
-  def perform(*args)
+  def perform(node_id)
     # Do something
-    puts "_______________________SEND ACTIVE TO FOLLOWERS_______________________"
+    puts "_______________________NOTIFY NEW NODE_______________________"
     @leader = Node.leader
-    Log.createLog("Active leader Node#{@leader.id}", @leader.id)
+    Log.createLog(Log::OK, "New node Node#{node_id}", @leader.id) if @leader.present? and @leader.id != node_id
   end
 end

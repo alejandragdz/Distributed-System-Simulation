@@ -1,4 +1,4 @@
-<div id="<%= dom_id node %>" class="flex h-96">
+<div id="<%= dom_id node %>" data-controller="node" data-nodeid="<%= @leader.id %>" class="flex h-96">
   <div class="p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 w-full relative h-full">
     <% if node.status == Node::LEADER%>
       <div class="absolute top-0 right-0 p-3 rounded-md bg-yellow-50 flex flex-row grid-cols-2">
@@ -24,12 +24,8 @@
     <div class="bg-gray-700 h-5/6 p-4 mt-3 overflow-auto rounded-lg">
       <table class="p-3 w-auto">
           <tbody>
-            <% node.logs.each do |log| %>
-              <tr>
-                  <th class="px-1 text-orange-200 max-w-sm"><%= log.created_at %>:</th>
-                  <td class="px-1 text-orange-400">Node<%= log.id %></td>
-                  <td class="px-1 text-white"><%= log.response %></td>
-              </tr>
+            <%= turbo_frame_tag "node_logs" do %>
+              <%= render node.logs %>
             <% end %>
           </tbody>
       </table>

@@ -25,7 +25,7 @@ class NodesController < ApplicationController
 
     respond_to do |format|
       if @node.save
-        ActiveNodeJob.perform_async()
+        ActiveNodeJob.perform_async(@node.id)
         format.html { redirect_to root_url, notice: "Node was successfully created." }
         format.json { render :show, status: :created, location: @node }
       else
@@ -67,5 +67,13 @@ class NodesController < ApplicationController
     # Only allow a list of trusted parameters through.
     def node_params
       params.require(:node).permit(:status, :log_id)
+    end
+
+    def notify_all_followers
+      ActionCable.server.broadcast(
+        "node_1",
+        {
+          action: "updated"
+        })
     end
 end

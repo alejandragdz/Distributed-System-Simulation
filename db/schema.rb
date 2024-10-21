@@ -16,7 +16,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_20_161323) do
     t.string "response"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "node_id", null: false
+    t.integer "node_id"
     t.index ["node_id"], name: "index_logs_on_node_id"
   end
 
