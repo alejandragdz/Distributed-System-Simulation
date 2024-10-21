@@ -1,5 +1,5 @@
 class NodesController < ApplicationController
-  before_action :set_node, only: %i[ show edit update destroy ]
+  before_action :set_node, only: %i[ show edit update destroy inactive_node kill_node ]
 
   # GET /nodes or /nodes.json
   def index
@@ -58,6 +58,20 @@ class NodesController < ApplicationController
     end
   end
 
+  def inactive_node
+    @node.update(active: Node::INACTIVE)
+    respond_to do |format|
+      format.html { redirect_to root_url, status: :see_other, notice: "Node was successfully destroyed." }    
+    end
+  end
+
+  def kill_node
+    @node.update(active: Node::DEAD)
+    respond_to do |format|
+      format.html { redirect_to root_url, status: :see_other, notice: "Node was successfully destroyed." }    
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_node
@@ -66,7 +80,7 @@ class NodesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def node_params
-      params.require(:node).permit(:status, :log_id)
+      params.require(:node).permit(:status, :active)
     end
 
     def notify_all_followers

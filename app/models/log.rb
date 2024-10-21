@@ -8,15 +8,7 @@ class Log < ApplicationRecord
 	ERR = 1
 
 	def self.createLog(status, message, node_id)
-		self.create(
-			status: status,
-			response: message,
-			node_id: node_id)
-		ActionCable.server.broadcast(
-	        "node_1",
-	        {
-	          action: "updated"
-	        }
-	    )
+		@log = self.create( status: status, response: message, node_id: node_id)
+		@log.node.can_be_candidate?
 	end
 end

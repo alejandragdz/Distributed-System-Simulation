@@ -6,14 +6,18 @@ class PingWorker
   def perform(*args)
     puts "_______________________SEND ACTIVE TO FOLLOWERS_______________________"
     @leader = Node.leader
-    @followers = Node.followers
+    @nodes = Node.nodes
 
-    @followers.each do |follower|
-      if @leader.active
-        Log.createLog(Log::OK,"Active leader Node#{@leader.id}", follower.id)
-      else
-        Log.createLog(Log::ERR,"Leader not fount", follower.id)
+    @nodes.each do |node|
+      if node.active == Node::ACTIVE
+        if @leader.active == Node::ACTIVE
+          Log.createLog(Log::OK,"Active leader Node#{@leader.id}", node.id)
+        else
+          Log.createLog(Log::ERR,"Leader not found", node.id)
+        end
       end
     end
+
+    Node.change_leader
   end
 end

@@ -22,7 +22,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_20_161323) do
 
   create_table "nodes", force: :cascade do |t|
     t.integer "status"
-    t.boolean "active", default: true
+    t.integer "active", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

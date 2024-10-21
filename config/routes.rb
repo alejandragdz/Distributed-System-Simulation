@@ -2,7 +2,6 @@ require 'sidekiq/web'
 require 'sidekiq/cron/web'
 Rails.application.routes.draw do
   mount Sidekiq::Web => '/sidekiq'
-  resources :nodes
   resources :logs
   get "home/index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -15,6 +14,9 @@ Rails.application.routes.draw do
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
+  get "/nodes/inactive_node/:id" => "nodes#inactive_node", as: "inactive_node"
+  get "/nodes/kill_node/:id" => "nodes#kill_node", as: "kill_node"
+  resources :nodes
   # Defines the root path route ("/")
   root "home#index"
 end
