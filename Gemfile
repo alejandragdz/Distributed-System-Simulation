@@ -59,3 +59,5 @@ end
 gem "tailwindcss-rails", "~> 3.0"
 
 gem "sidekiq", "~> 7.3"
+
+gem 'sidekiq-cron'
