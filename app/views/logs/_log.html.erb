@@ -3,8 +3,10 @@
     <th class="px-1 text-orange-200 max-w-sm"><%= log.created_at %>:</th>
     <% if log.status == Log::OK %>
       <td class="px-1 text-lime-400">OK</td>
+    <% elsif log.status == Log::REQUEST_VOTE %>
+      <td class="px-1 text-orange-400">REQ_VOTE</td>
     <% else %>
-      <td class="px-1 text-red-400">ERR</td>
+      <td class="px-1 text-green-300">VOTE</td>
     <% end %>
     <td class="px-1 text-white"><%= log.response %></td>
   </tr>

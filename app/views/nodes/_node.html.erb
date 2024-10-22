@@ -1,4 +1,4 @@
-<div id="<%= dom_id node %>" data-controller="node" data-nodeid="<%= @leader.id %>" class="flex h-96">
+<div id="<%= dom_id node %>" data-controller="node" class="flex h-96">
   <div class="p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 w-full relative h-full">
     <% if node.status == Node::LEADER%>
       <div class="absolute top-0 right-0 p-3 rounded-md bg-yellow-50 flex flex-row grid-cols-2">

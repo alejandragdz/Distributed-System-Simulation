@@ -32,10 +32,13 @@
           </table>
       </div>
 
+      <%= button_to "Start simulation", start_simulation_path(), :method => "get", :class => "rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium w-full mb-5" %>
+
       <%= form_with(model: @node, class: "w-full") do |form| %>
         <%= form.button :submit, class:"rounded-lg py-3 px-5 bg-blue-600 text-white block font-medium w-full" %>
       <% end %>
     </div>
+
 
     <!--LEADER-->
     <% if @leader.present? %>

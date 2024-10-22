@@ -10,13 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_20_161323) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_22_065835) do
   create_table "logs", force: :cascade do |t|
     t.integer "status"
     t.string "response"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "node_id"
+    t.integer "sender_id", null: false
     t.index ["node_id"], name: "index_logs_on_node_id"
   end
 
@@ -25,6 +26,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_20_161323) do
     t.integer "active", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "leader_id"
   end
 
   add_foreign_key "logs", "nodes"

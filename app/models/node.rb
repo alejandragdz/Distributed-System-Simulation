@@ -1,14 +1,14 @@
 class Node < ApplicationRecord
   has_many :logs
   before_save :default_values
+  after_save :init_node
 
-  scope :leader, -> {find_by(status: LEADER) }
   scope :followers, -> {where(status: FOLLOWER) }
   scope :candidates, -> {where(status: CANDIDATE) }
   scope :nodes, -> {where(status: [FOLLOWER, CANDIDATE])}
   
   def default_values
-    self.status ||= Node.all.empty? ? LEADER : FOLLOWER
+    self.status ||= FOLLOWER
     self.active ||= ACTIVE
   end
 
@@ -20,9 +20,16 @@ class Node < ApplicationRecord
   INACTIVE = 1
   DEAD = 3
 
+  def self.leader
+    return Node.find_by(status: Node::LEADER)
+  end
+
   def leader?
-    @leader = Node.leader
-    return self.id == @leader.id
+    return self.status == LEADER
+  end
+
+  def is_follower?
+    return self.status == FOLLOWER
   end
 
   def active?
@@ -69,5 +76,46 @@ class Node < ApplicationRecord
       end
     end
     nil
+  end
+
+  def init_node
+    ActiveNodeJob.perform_async(self.id, 0)
+  end
+
+  # --------
+
+  def requests_votes()
+    nodes = Node.nodes
+    if nodes.count - 1 > 0
+      self.update(status: CANDIDATE)
+      Node.nodes.each do |node|
+        if node.id != self.id
+          Log.create(
+            status: Log::REQUEST_VOTE,
+            response: "Node#{self.id} requests votes",
+            node_id: node.id,
+            sender_id: self.id)
+        end
+      end
+      Sidekiq::Queue.all.map(&:clear)
+    end
+  end
+
+  def change_leader
+    puts "akljsbals..djbañdcjañ.jba.csa.CBS.LBCSLBSBL.SA-J-{{SÑODKÑSADMASONÑKSlNSlnlds"
+    self.update(status: LEADER)
+    Node.candidates.each do |candidate|
+      candidate.update(status: FOLLOWER)
+    end
+  end
+
+  def notify_all_followers
+    Node.followers.each do |follower|
+      Log.create(
+          status: Log::OK,
+          response: "Leader Node#{self.id} is active",
+          node_id: follower.id,
+          sender_id: self.id)
+    end
   end
 end
