@@ -10,6 +10,10 @@ class Node < ApplicationRecord
   def default_values
     self.status ||= FOLLOWER
     self.active ||= ACTIVE
+    @leader = Node.leader
+    if @leader.present?
+      self.leader_id ||= @leader.id
+    end
   end
 
   LEADER = 1
@@ -102,10 +106,12 @@ class Node < ApplicationRecord
   end
 
   def change_leader
-    puts "akljsbals..djbañdcjañ.jba.csa.CBS.LBCSLBSBL.SA-J-{{SÑODKÑSADMASONÑKSlNSlnlds"
     self.update(status: LEADER)
     Node.candidates.each do |candidate|
       candidate.update(status: FOLLOWER)
+    end
+    Node.followers.each do |follower|
+      follower.update(leader_id: self.id)
     end
   end
 
